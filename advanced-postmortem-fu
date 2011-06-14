@@ -1,0 +1,114 @@
+John Allspaw - Advanced PostMortem Fu & Human Error 101
+
+
+Resilience Engineeering - Hollnagel, Woods, Dekker, Cook
+
+Fundamental Surprises - Outages, degredations
+
+ETTO - Efficiency / Thoughness, always a balance betwween them
+
+Blunt end - org people, polciies, regs
+Sharp end - us (dealing with stuff, alerts etc) 
+
+Anticipation, Monitoring, Response, Learning
+
+Gene Hackman - The Conversation (in relation to 'Who here makes graphs?')
+
+IRC is giving logs (feeding logs into solr), everything in IRC. IRC + graphs = black box for website
+
+Graphite - drawAsInfinite - see the blog post, they are doing code and config deploying on it
+
+
+Investigation:
+
+Start time
+How was detected (TTD - Time to Detect)
+Fixed \o/ - TTR (Time to Resolve) - looks good to community, doesn't need to be 100% fixed
+All clear
+Impact Time = TTR - Start
+
+
+Sevs - Not everything is the same, different cats
+
+"Severity 3 is kinda like the third child"
+
+
+How people feel during outages is really important
+
+Long response times in the crisis patterns will cause strange things, stress rises
+
+Internal and external updates regularly (with substance), by someone who is technially able, but isn't involved - Fairly sure this is in the webops book
+
+How?
+
+Thematic Vagabonding results in moving from one troubleshooting thread to another without giving them enough time, not sticking on a theroy enough, but not "too stuck" where you are too fixaed on something, the wrong problem.
+
+Heroism (lone wolf fixer), Distraction - bad
+
+Improvisation - Legit part of responding to unwanted outcomes. e.g. Apollo 13
+
+
+Why?
+
+RCA tends to make things seem simple. Hindsight Bias - knowledge of the outcome negative influences the analysis of the proces. 
+
+Make the steps towards faulure appear forseeable and obvious
+
+"Should have know better" etc. Bad.
+
+Outcome Bias - Judging a past decision based on its outcome
+
+Five Whyss - Popular, fine place to start, *but* can be mistaken for complex causality, good for getting people talking about it. Doesn't get you the actual problem cause, too focused on small components, hindsight etc
+
+
+Swiss Cheese model - Allows for the blunt and sharp ends. Still a linier process. Cheese is good, holes are bad! Better, but not helpful
+
+Resultant vs Emergant - Emergent failure is like when the butterfly beats the wings and causes a hurricane
+
+
+Systemic - Covers the "systems" all the different bits that will have deps with each other, *not* just the routers, servers etc, but the people factor too, 'last round of funding', need to finish a feature etc
+
+
+***Causes are constructed, not found. So we want Contrubutors and not causes. There is no single root cause.***
+
+
+Quantify Responses
+Qualify responses - How good was our response
+Put those together yo
+
+Human error - people do what makes sense at the time, they're not there to do a bad job
+
+Working out what the mind of the person was at the time that when the error was created, why it made sense to them at the time. What were they seeing, focusing on, expecting to happen etc?
+
+Could peers have made the same error under the same cuscumstances? While trying to escape hindsight bias.
+
+Look at why things have gone right, then you're got a lot more data to work out why things have gone wrong. What and Why do things go right?
+
+Why did we fail? BUT Why don't we fail all the time?
+
+Be open about near misses, wiki, email etc. 'Please don't be as dumb as me'
+
+
+
+* Examine how changes (at all layers) will produce new vulnerabilities.
+* Use tech to support and enhance human expertise (not just automate automate automate)
+* Tame complexity through new forms of feedback
+* Realize that your systems are not inherently safe
+* Human error is not random
+
+go / no-go
+
+
+Just Culture  - A culture that can perform blameless post-motrums. Balance accountability with learning
+
+Holding people accountable not the same as blaming people
+
+Increase accountability by supporting learning
+
+Then people can send a "miss" email, they'll own their own problems, they are empowered and they will fix stuff, and teach others in the org
+
+
+You can't hold someone accountable and responbiel for something if they can't change the conditions for why the failure happened. They should be able to make reccomendations etc once they've worked stuff out
+
+
+See the slides, as there are must-read books on this
