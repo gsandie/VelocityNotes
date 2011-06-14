@@ -1,0 +1,107 @@
+Cloudera talk about hadoop, philip zeyliger - want to try and get the slides on this one
+
+Managing the System Lifecycle and Configuration of APache Hadoop and other distrubuted systems
+
+
+
+Background
+----------
+
+Collecting a lot of stuff
+Problems - deep analysis, etc
+
+Consoldate *everything*
+(scoop / sqoop?)
+
+HDFS - file system, namenode holds the metadata and the datanode holds the data blocks
+MR - computation schedular, job tracker and task tracker
+Hbase - dist k/v store, masters assign regions, regsionservers serve them
+
+
+Datacenter computing implies distributed systems
+
+Hadoop separates distributed system fault-tolerance code from application logic
+
+CAP theorem, you can't have all of the desirable things
+
+Easy to get lots of computing from the cloud guys, but harder to buy a bigger faster machine
+
+Easier distributed systems with caching/mirrors and statelessness
+
+Stateful - hdfs, zookeeper, more interesting lifecycle, can be harded, depends on the local disk
+
+Position
+--------
+
+Existing tools don't generalize well for distributed systems
+
+List of exsiting tools for build (install os), config, install package, start/stop
+
+There can be version divergence as well as config divergence
+
+Prod / Dev clusters - same size? Running the mission critical jobs on those clusters? Or just prod
+
+Shell scripting is not the answer really.
+
+So what can we do about all this stuff:
+
+* need something that is analogous to packaging but understands mutiple machines
+* something to be used by the users, not the devs of the underlying system
+* one config
+* start, stop, and workflows, e.g. rolling upgrades
+
+Machine images are not the answer to the above
+Config management tools are good for the base os, but stuggle with hadoop, make assumptions about machines running N services not, services running on M machines (but we are getting better with the config management tools)
+
+Implementation
+--------------
+
+Built the swervice and configuration manager, availble t the cloudera customers (hadoop summit for more info)
+
+Web based for config etc, can show dependencies, type checking etc. Allows running commands, start stop, show logs, etc. Manages the config by sending it out to all of the machines
+
+Built this cause customers were deploying things in different ways, and support of this was hard 
+
+Agent -> Server. "What do i do?" "x and y", "Hey I'm doing x and y, what do I do?" "x and y"
+
+Server - needs to track a lot of things, heartbeats (hey!), validation, config gen, health, web fe etc
+
+Install packages, install everything everywhere, disk is cheap.
+Config are transient on the managed machine, sent as part of the heartbeat, avoids config creep (hidden in var run)
+'commands' manupulate the state of the system
+
+Can model and observe, we're building the stuff and pushing it, we know where it is going, so we know the model so then we an build the observations 
+
+related - google cluster manager, procfile and foreman, and linkedin's glu (oss)
+
+monitoring - made something like top for hadoop
+
+Hadoop
+------
+Planning - how much data generating, can grow more later, storage capacity (3x replication factor, plus compression), also how much data are you ingesting per day
+
+Less than 10 machines, one machine per master, everything else slave, seperate on bigger clusters
+
+HW + networking - namenode and jobtracker on the bigger machines (want raid), disks as jbods (data notes etc), gbe, top of rack switches, avoid VT (good for devel, PoC etc)
+
+
+typical - 5-4000 (8 core 24gb, 12TB, gig-e), 20-40 nore per rack
+most people using centos/rhel5, and oracle jdk(not 1.6.0u18!) (hadoop taxes jvm a lot and hits interesting bugs)
+
+os config - typical stuff, noatime, ulimit (open files etc), tweak swappiness
+
+Zookeeper is for co-ordination
+
+
+same config, monitor config for divergence, same config on each machine to make things easy
+
+
+disk mounts
+namenode, typically two vols, nfs can be ok, if mounted to fail not lock
+
+
+Common - it wants DNS, ipv6 gets turned off, oracle jvm, secondary name node not checkpointing (can't talk to namenode)
+
+monitoring - http, jmx, *sick is worse than dead!!* or ganglia
+
+
