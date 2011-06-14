@@ -1,0 +1,52 @@
+How to Scale Dirty and It's Influcence on People
+
+infochimps/cluster_chef repo
+mrflip/velocity_infochimps_2011
+
+
+Going to take twitter search results and sweeten them with infochimps data
+
+Concurrenct is a pain, so we need threads:
+
+Goliath - write concurrent code but built in in order
+
+Use Chef (cluster chef) repo above (they are using small roles for each thing, showed the elasticsearch role split into multiple es recpies, plus a base)
+
+Stack metrics - lines of code (sum squared lines of code) (grep with no comments and count, no tests for critical path), repo size etc, the more code you have the harder it is to add more code
+
+prefinery - check it out
+
+Going for the minimum viable, also looking at the biggest pain points first 
+
+Don't solve problems you don't have
+
+Want as much stuff as decoupled as possible, for stuff like performance monitoring looking at statsd / graphite (roles for each, look in teh codez)
+
+
+Making something that gives a marketing person reports on stuff
+
+resque (github guys) sends a job out to get stuff -> scraper script scrapes from twitter api -> disk store -> flume [ tailer, decorator, skink] -> db -> ? -> site
+
+Much flume love
+
+Flume is reliability glue
+
+When flume is tailing stuff make sure you make it ok to have stuff read multiple times, then it is ok for a flume node to die. Flume can use jruby decorators. Lets you then write the little bits of code, as decorators, so make your data 'pretty', e.g. it is in the format you want it to be in
+
+
+Optimize for the common case
+
+Minimize critical path
+
+Tiny Inspectable Components.
+  - Integration tests not unit tests
+
+Code may smell bad, but as long as it is not causing problems (performance or other), and not breaking, and performing the task that is is meant to be performing, then this is ok right? Refactor/fix it if is breaks
+
+
+Radical de-coupling of critical path edges, no meetings, integration tests, *not* unit tests, unbundle reliability glue from function
+
+
+Sum squares lines of code as a metric:
+
+Website was a bit tall stack of code, found it coule be de-coupled, for example the user and developer dashboards. So used the rails engines, split the site up, little sites that then can be individually tested. Spliting into seperate components is a big win
