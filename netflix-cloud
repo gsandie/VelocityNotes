@@ -1,0 +1,56 @@
+Adrian Cockroft - Netflix in the cloud
+
+Check - Redesigning Netflix API on the blog, also the lessons learned blog post again
+
+Graphs of instance usage in aws
+Also cloud test system, solastic?
+
+Streaming data shipped to CDNs, treat them like a commodity, play them off against each other for price etc
+
+Log crunching - S3/EMR/Hive/BI (Terradata)
+
+Working on PCI-DSS/SOCKS in the cloud
+
+-- Ignite Talk bit = Tree swing picture, need to have contraints, define what you don't want as well as what you want
+
+Ops taking on more of the complexity helps to free the devs to make stuff
+
+No sticky sessions:
+ - RR DNS LB - Request based code with memached
+ - Flexible fine grained services - good with autoscale, stops tangled code (REST interfaces)
+
+Apache Avro serialisation, in front of memcached
+
+Service access lists - only access one service (and logging) via rest interfaces, they are seperate
+
+build them up to make more complex tings
+
+swim lane diagram describes interaction between all of the components
+
+internal interfaces can then be instrumented, and have slas etc, can be monitored for performance as they are highly restricted, restrict via iam, sec groups etc
+
+facated interfaces
+
+built their own discovery service, much like zookeeper (or noah??), thing check in every 30s, say what they are, then get a list of the stuff back, if things don't check in they are removed from the list
+
+sometimes put memcached in fron of s3
+
+look for the talk about nosql at netflix by Sid
+
+checkings, then there is a build, make rpms, then an ami is baked, all in jenkins, this is pushed out and new instances are launched with the new ami, but, they launch the new ones, then get rid of the old
+
+rainbird?
+
+backups: into a different aws account in s3, cnrytped, locked down, new archives on other cloud vendors
+
+restore into new regions
+
+more on the fine grained security stuff and the sort of performence monitoring this will let you do
+
+Tools that need to GC the old 'dead' instances, also the performance/monitoring tools need to deal with the fact that they can suddenly have 100s of new instances, then the old ones needs culled.
+
+IP inheritence can be a problem, when some of the new hundreds spawned get an IP of an old machine, tools get confused
+
+API API API
+
+Also want a deep view inside the application (they use appdynamics)
