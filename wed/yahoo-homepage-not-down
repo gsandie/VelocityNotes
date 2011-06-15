@@ -1,0 +1,39 @@
+Why the yahoo homepage went down, and why not before - Jake Loomis
+
+Lotta info on the slides for this one, might want to get them
+
+Going down is bad
+
+Tip #1 - Redundancy for everything, both inside and outside of our own network. Must understand the systems failure points (everything can and *will* fail at some point during the lifetime). All levels, net, colo, dynamic bits fail (serve static, serve cron generated static but gotta make sure you don't generate the failure page!), fall back to other bits of the site.
+
+Tip #2 - Make changes in a safe environment. Practice how you play, CI smoke tests, changing in prod like, as close to as possible. Do to test what you do to prod. Copy prod traffic to stage. TREAT QA etc LIKE PROD. Same monitoring etc. Dark launch
+
+Error proofing change: Recover quickly. They go with instant rollback.
+
+Tip #3 - Global Load Balancing. Route traffic to cloest dc. serve any market from any cd. used in failure scenario, maintaincnance, code changes, testing (lets you fail about a lot for testing, win). there are performance increases. <--- failure sure there is a chapter about this in webops book. They do stuff to keep the traffic in an area to stop so much back and forth with tcp handshakes (look into this), also shifting traffic about for hotspots. <--- I wonder if they are using some sort of anycast here?
+
+Tip #4 = Monitor everything. They are tested at 35k requests per second for the news product, so to get better capacity they'll switch off features, and they'll move the content around the yahoo network to shift the traffic around
+
+Tip #5 = Fallback plans ion case of failure. try to isolate the failure, and you can always drop features to add capacity (can do this with internal or external) (stuff like ratings of stories top stores, links to other site bits, etc, comments etc). Site being modular helps a lot here. Gotta then learn from the mistakes, and follow up on the learnings and record what you're going to do about it
+
+You gotta have focused engineers with the operational mindset. Understanding etc. Also catagorise the responsibilites so you know what sort of tools you need, train for, hire for. e.g. monitoring, slas, etc 
+
+
+You gotta make sure you are monitoring all of the fall back plans too. Crons etc. Also monitor everything!!!
+
+You can never have too many metrics.
+
+QA:
+
+
+How do you decide which knobs you would turn, for failing out of colos etc? When comfortable with it (doing it all the time, weekly etc), then why not try it. If it recovers for the users then great. Also speak with teh business about these things, you want to have the least user impact vs op bebefit (turning off ads last!)
+
+Yahoo mail failure? Not all details (don't work with that dept) but it impacted a colo and was hard to move out from, due to data and the tools that we had for speed at the time. Phil comes on - had to pick the lesser of two evils, continually juggling things, hard decision to make to do fast and 'correcty'
+
+Chain of command: Gotta empower the people on-call. Those who understand the products have to be able to make the decision, and be allowed to make mistakes. Don't want paralysis. Practice practice failure stuff, when big impaact (global vs local) then maybe speak to managers
+
+
+Good engineers prevent things from getting stale. As in the case of the cached page, the engineers were thinking about it, but hadn't had a chance to refresh it yet :( A mistake, but we won't let it happen again. Warmup cache scripts can warmup offline
+
+
+How do you deal with the write layer with the gloabl lb? It's hard. We solve it in different ways. Could be a whole new talk. eg. user db, local write then send to a global db
