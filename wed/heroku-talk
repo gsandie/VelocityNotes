@@ -1,0 +1,43 @@
+Building for the cloud, lessons learned at Heroku, Mark
+
+
+Request flow is:
+
+elb (sometimes they break) -> routers (erlang) mapping the traffic mostly simple http, tracking where to route the incoming requests, through a routing table (list),  -> app servers`
+
+free apps will get idled out, but the routing layer knows this and can ask for processes to get spun up if they are reqested
+
+used to use vanrnish for a caching layer, but pulled it, due to thinking that static stuff is better in a cdn
+
+no persistent state on any of the instances, including filesystem etc (fs changed with ceder due to node etc but rm'd on process rm), helps with horizontal scaling
+
+get psql, but think about sharding upfront, due to cloud and disk io yo, wanna fit in memory and avoid the disk
+
+please don't use ebs! don't be like us - caveat (use it if you need to, but make sure there is like real time rep something else, plan and think about the usage of it they use for db).. network block storage in teh cloud just isn't there today <-- mirroring many of the blog posts seen post ebs outage
+
+lots of advantages of having disposable compute, saving with nodes being strange, can bin them with no worries (if it starts recurring then dig)
+
+using elastic stuff not just for scaling, but for rolling new stuff, roll out new, move code over, bin old, the new doesn't cost much as it is only for a small period of time
+
+discovery - bunch of things heartbeat over amqp announcements eg varnish node service might listen for this varnish.up, check config, add, restart varnish
+
+nginx doesn't do health checks over its mod proxy
+
+treating the amqp bus as ephemeral, assuming messages will be lost, 5min timeouts for messages not got
+
+using a thing like zookeeper, in house written, doozer (for internal service mapping) distributed k/v store, sub to key, do stuff when events on teh key
+
+DNS stuff:
+
+not using DNS for service discovery, mostly the resolver libs are blocking, we don't want to block
+
+30s ttl (this is ok on a good provider with anyvast all over teh world)
+cnames ftw (not apex domains)
+using subdomain as we want people to cname to blah.heroku.com (this is a cname to elb ip)
+
+self-hosting
+
+running your core infra on the platform. eek. but probably ok, carefully, everyone has their own dev bit, and can create the 15bits to bring up a small prod
+
+
+qa:
