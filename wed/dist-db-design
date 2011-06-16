@@ -1,0 +1,21 @@
+Justin Sheey - Basho / Riak - Distributed DB design
+
+Harvest and Yield - chose where your degredation is.
+
+Perfection is unattainable, so design with that in mind.
+
+Riak avoids having assert handling code everywhere by making each bit of the db a small process. THat process then has a supervising 'daemon' that starts stops monitors it. If the process blows up, the deamon will catch the error, log it, then try and either get the process back into the previous state, or start it fresh. It looks after its own wee subdomain. This really makes the code a lot cleaner, easier to read, less chance of bugs.
+
+Virtual nodes, e.g. many storage engines per server, good for sanity when adding or removing nodes. As...
+
+Riak is distributed yo.
+
+Sloppy quorums for read/write, with hinted handoffs (data goes to x y z, if z is gone data goes to x y b, b then pushes to z when it is back). This allows for repairs of the data and helps with a node away. We can fix inconsitent views of the db membership too. This sloppy quorum also works with clusters in different dbs...
+
+going with masterless replication allows for eventual consistency
+
+Don't have special nodes.
+
+Consistent hashing - kinda like a zero hop routing protocol.
+
+

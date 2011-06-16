@@ -1,0 +1,25 @@
+Databases with Robert Treat
+
+I missed the start of this, and was confused as there was meant to be a caching talk on at the time.
+
+There was talk of the config management, of course you want to be doing it for the db config. 
+
+Make sure prod / stage / test dbs are the same. You want this for training and confidence.
+
+Still monitor everything like you do on the web site, also monitor as much db stats are you need, very specific to the db that you run. But don't get too hung up on the stats, don't let the dba's dive deep into them, you want broader more useful stats rather than super accurate ones (not to say they shouldn't be accurate).
+
+These metrics of course let you know what good looks like, which is important for forensics (Is a load of 3 good/normal?)
+
+Makes it easier to corrolate change and see when things might be causing a problem.
+
+CI in the db world doesn't really work. Losing data is bad, hard to get data back. Code is static, controlled, but data is dynamic and in the hands of the users (for adding reading it etc).
+
+You need to manage the changs. Can be a good idea to let the devs design the schemas and collaborate with the dbas, use them as like senior devs who they would go to to answer questions. After all the devs are writing the apps right. Work together.
+
+Style guides really help here. Make one and use it (for like tables names etc, same as your coding style guide).
+
+Schema changes are migrations. Review, documents, look for the red flags.
+
+Figure our your off peak, that is when you do the changes. But be smart about it, can be done once a week, once a day etc. Work with the business and make sure it would be done at a time when the site wouldn't be put in jeapordy.
+
+Schema changes don't need to be tied to code changes. You should make them early, its fine to have those tables sitting there not getting used. Same for the reverse of dropping tables. Let the code push happen that stops the writing to the tables, make sure there is no writing to those tables. A couple of weeks later you can clean up, it's not soo bad to have those tables and that data there, and it's better than losing the data etc.
