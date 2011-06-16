@@ -1,0 +1,75 @@
+Jason Cook - Active/Active @ wikia
+
+45m monthly visitors per month
+246 languages (comunity are translating)
+everything gpl, and all info is gpl
+
+Active/Active - Not Master/Master - still have a master dc, but want to be able to read out of all of them
+
+built on mediawiki, out of the box there is: master/slave, read after write (does fun stuff with cookies for the master/slave), direct cache invalidation (look into this), caches well`
+
+94% cache hit rate, 1-5% logged in, 99% of pages won't trigger a write
+
+content is not static
+
+went from single location (DC still a SPOF), single provider, and they screwed up (bgp problem, affected site, helpless)
+
+built a DR site in an old nuke bunker, middle of nowhere, hard for BW (long lead time), but moar price, everything 2x
+
+GeoDNS on dynact now (wrote their own but wasn't so good) --- yays for global dns
+
+Varnish is the bomb:
+we do request restarts if there is a problem with a dc host:
+
+if (!req.backend.healthy || req.restarts > 0) { set req.backend = iowa_varnish; } 
+
+so the DR location is a caching beast
+
+mediawiki has a readonly mode, lets them to degrade, people don't notice
+
+global whack-a-mole things would bounce about when requests were failing overload nodes, varnish director quorums, unless less 75% are failing then don't fail over 
+
+cold caches were now a problem, as was global cache coherency, users need to see the same thing
+
+varnish - on change of some content, queue a purge into the whole varnish stack, worldwide, under 1s
+
+
+memcached problems - don't want to be pushing out stale cache stuff on failover/recovery, end up collecting stuff into a page render, then write to mysql blackhole table, reading from binlogs, gets things synced up
+
+
+but what about the logged in users? use cache keys to give people same pages, but for the logged in users we'll use idle apaches to render for geo directed users
+
+but problems: db shim - some gets trigger writes, posts can get sent easily to the write dc bacl to the master, so we added http error sending the request back to the primary dc, varnish then sends it off
+
+cookie the user after a write, so we can see when they need to see some new content
+
+still need 2x cap
+
+moving to a point where the primary dc is a write only dc, read happens on all the other dcs
+
+session stores - users should be able to login in a remote dc, experimenting with a dist session store, using riak in each dc, replicating in the ring
+
+
+
+
+QA:
+
+How do you direct traffic? dynect health check, mark something as down in varnish using a url, then dynect notices and removes from the cname (1min ttl cname on wikia.com)
+
+Varnish sending traffic to write db if user tries to write to a read one? send an http response code back to varnish to show something being a read db, if varnish sees a like response code like that it knows to take action, used a random code, like 407
+
+For images etc, in varnish, you use a vary-header trick to expire on, how? Capture the base url of each one, add the vary, capture x-orig, match and do stuff
+
+how do you deal with dns load balancing when people advertise - pretty much need to be close to dynact so in the same location but anycast is a pain right
+
+how do you deal with ssd? work with supermicro, don't need raid, just use the ich10 from intel, ssd wired right into the mobo. use a raid card now, but just as jbod. can get random performance edge cases sometimes
+
+
+riak challenges? we do a lot of shadow writing for testing stuff
+
+edge site includes? exist on edge caches, like ssi's. No we don't use them. Varnish couldn't gzip the output of it, but now with varnish 3 we could use it.
+
+
+we don't do ssl, nothing in front of varnish
+
+intel ssds win
