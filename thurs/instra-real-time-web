@@ -1,0 +1,23 @@
+Instrumenting the real time web with node.js - Bryan Cantrill (Joyent)
+
+closures are really important in js
+
+async with unix apis = win
+
+dtrace - important for ass saving - proper win - probably want to go and look at some papers on it
+
+ruby has providers that lets you instrument it, google it
+
+gc matters with node.js
+
+on teh github - bcantrill -- also silentrob
+
+found that cpu was less than 6%, however network, network can get worked really hard with little cpu
+
+in the real time system the main thing that matters is the latency, and espesically in a distributed system the dist of latency osver time is essential, don't avg that out
+
+
+rm.no.de:8001
+
+
+

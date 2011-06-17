@@ -1,0 +1,46 @@
+Theo - Dashboards for web operations
+
+Dashboard: instrumentation, actionable info, relavent to your purview and purpose
+
+observe and don't influence via teh dashboard
+
+you are there to increase value for teh business and ensure success
+
+how do we measure so we can say "I accomplished this goal" of whatever the business goal is, set by the shareholders/board/ceo (he executes it - the vision)
+
+as stuff changes the metrics for success will change, gotta have the transparency accross the groups
+
+take the metrics from all over the business, marketing, hr, call center, finance, and along with the tech stuff, make a dashboard from that
+
+mttd (mean time to detect) is v.important and usually awful
+
+monitor the buisness, you running that fast website is a direct affect on the business
+
+text is useful, consider deployment (version numbers of the deploy), or http codes, you'd want to see deployment version + AGE of deploy person (and get the previous when that was, and count of deploys), colour is useful and important for these things
+
+[[ or with the http codes I guess you'd count them ]]
+
+numbers are trickier as gauges imply a deep understanding of bounds and tolerances, for things that are fixed and you understand it you can use it e.g, like percentages, temperatures, power per rack, bw per uplink
+
+but gauges shouldn't be used for things like; iops, current visitor counts, requests per second, bw overall; things with no bounds or unknown bounds (changing the ranges are bad!!)
+
+For numbers graphs are better (but remember the problems with the averages of the data from the 'look at your data' talk)
+
+understanding the users, they live everywhere, "where" is interesting, marketing etc like the where
+
+so then like looking at users, where they are from, and then other data (like page load times) is interesting, and interesting to ops
+
+but of course things on the net != physical location, but routes/networks etc is interesting, so can look at pagetime per network for example, moar interesting.
+
+you can then give better data back to the marketing and give it quickly, and really work with them, collecting all the good business metrics stuff, from your app/site
+
+
+combining the useful data and making it real time
+
+
+graphite <-- look at, recconnoiter <--- WANT!
+
+sesonal data thing in rrd tool? look for paper, for holt planning?
+
+
+everything real time

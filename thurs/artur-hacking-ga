@@ -1,0 +1,13 @@
+Artur Bergman - Hacking google analytics for tracking other data
+
+
+showing all sorts of other traffic tracking stuff, with a bunch of data points
+
+think he is serving out the ga from a cached varnish? missed the start :( guessing using a lot of different ga stuff from the pages
+
+
+different data points, from like /osais/0/1 /osais/0/2 etc
+
+
+
+
