@@ -27,3 +27,58 @@ No frills servers, 1.5U. Again go reading the opencompute for infos
 * itterate and innovate
 
 
+---
+Velocity Culture - Jon Jenkins
+
+Talked about the intersting case studies that MS and double-click had put forward.
+
+Why no / not so many Ops case studies?
+
+Showed some amazon stuff. Calculated the server peak cpu + 15% and drew a line, everything between that and the actual load was wasted capacity. Less is more. Since 10.11.2010 all of az.com has been running on ec2 (well, like ec2 not the same as the customers). Small is the new big.
+
+They'll deploy environments into stages. e.g. s3 and all that is requried to run it is an env, they can then deploy that into test/prod/etc. A dev can spin up all of the bits for an env, test some stuff, then dump it.
+
+They are doing this 11.6s on avg!
+
+Virtual servers makes things easy to do. For example rather an orchestrate crazy stuff, they can do the following for a deploy:
+
+cp fleet fleet2 ; deploy fleet2 ; flip lb ; all ok? If not then flip lb back
+---
+
+Artur on SSD:
+
+You need one. Intel 320 is fine. $1000 for 600gb
+
+---
+John Reieig - holistic performance with jquery
+
+dynatrace
+jsfiddle / jsperf, browserscope, ejohn.org
+
+for jquery they analyze: time, browser speed, copu usage, memory usage, parse time, battery usage
+
+look into google info, they seem to pull down js, commented out, then they dynamically execute it, which speeds up parsing time etc
+
+---
+
+ilightening demos:
+
+pagespeed- check it, OMG REMOTE DEBUGGING IN WEBKIT LEVEL!!!!, new stuff like performance.{timing,memory}, console.profile('name'), profileend, then console.profiles to show the objects. Check the dev tools docs and manpages for this.
+--
+
+Case project - Paul @ Rackspace
+
+Deployment system as a RESTful API has stuff like:
+
+service management (init over http)
+version management (distribute, update, rollback)
+service monitoring
+service coordindation
+
+---
+
+Heroku have something called logplex that sounds fun
+
+
+
+

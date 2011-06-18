@@ -8,6 +8,4 @@ think he is serving out the ga from a cached varnish? missed the start :( guessi
 
 different data points, from like /osais/0/1 /osais/0/2 etc
 
-
-
-
+Wikia varnish google analytics - they put GA calls into the vcl? Search for this online
