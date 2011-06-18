@@ -1,0 +1,67 @@
+John Adams - Scaling Twitter Concurrently
+
+* Start early with sharding of app features - keeping services seperate and defining interfaces between them really helps with scaling up the platform
+
+* requirements as you shard:
+ - fault tolerent services
+ - recovery
+   - no spof
+   - no dpof (distributed point of failure)
+ - scaleble
+ - observability (can you see how the app is performing)
+
+web <-> proxy/router <-> (multiple) services apps | on top of [ cache | db ] layers
+--
+
+Self healing services, you can admin them as seperate units and teams, decouple and split things up.
+
+Dealing with failure:
+ = decomposition via rpc (things like thrift as a transport)
+ - data marshalling (thing slike json, binary json, raw data, message pack)
+
+You *have* to fail fast (< 20ms) and fail often, then you retry (via another route, daemon etc) you *don't* have the user retry so do it without them noticing.
+
+You can do this with queue/daemons (see Kestrel), but then what happens in this failure, job read from the queue to process and the service to process it dies, do you requeue, drop the request? All depends on the request app really. Or have some for fault tolerance there (like do before delete? dunno)
+
+async ftw. process stuff via queues, making http requests is expensive so we try to avoid them, gotta move work away from the web request
+
+*SPDY* -- had this at the top of the page as something to look at
+---
+As an example they showed off a passwd daemon which would:
+  - validate passwords and issue a token
+  - does it over a socket
+  - with radius/ rlm_otpd (one time passwd daemon) -> ldap on the backend
+
+Looking at the different failures?
+
+e.g Network:
+ - states: down / latency / catatonic (accept() -> nothing) / dependency down or corrupt (accept() -> partial || corrupt data returned)
+
+Twitter think monit ftw
+
+Also post commit hooks for sanity checking stuff, like running config tests on config that will be generated (so gen the config too in the hook).
+
+SSL - see googles paper from last year, but ssl is getting to the point where it should be on by default, you get problems:
+  - gotta think about ssl keepalives -> more open sockets
+  - which cypher? RC4 (fast / less secure), AES256 (slower, more secure, but nice on intel hw)
+
+Ephemeral vs Non-E cyphers:
+  - Ephemeral ones are a bit slows
+  - E are better if the key is subponeaed 
+
+(also showed some openssl speed command)
+
+Mozilla CSP - read more about this
+
+Unix and friends have problems at high concurreny, syslog, cron, ntp, all can produce the thundering herd affect. introduce randomness into when the things are scheduled (+-some minutes)
+
+logging is a problem, script ftw, added twitter patchces for lzo compression and direct into hdfs, tend to log local and then use scribe to send to agregation nodes
+
+In summary:
+
+* decompose into services and design with this in mind
+* instrument your app, know what it is up to
+* high concurreny interactions can cause unforseen problems so think about that
+* fail fast, fail often, retry for the user
+
+

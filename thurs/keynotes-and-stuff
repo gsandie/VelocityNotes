@@ -1,0 +1,29 @@
+Velociy Berlin is coming
+
+See a wrap up webcast on the 24th
+
+Yahoo IPv6 day:
+
+* used ipv6 proxies
+* 6to4 relays at peering points
+* direct the user, help pages, give them tests and explain how to fix
+* Test all for a dual stack
+* remember the monitoring, it can behave different (things like service health checks too), check it from different views
+
+--
+
+Facebook - real interesting talk about scaling, need to get the slides as packed with info, a lot with open compute
+
+They did a lot with software before moving to building their own hardware (hiphop etc).
+
+Less is more when they designed the server. It was all in house. They use a tripple rack, as it saves time when shifting the large amounts of hardware
+
+No frills servers, 1.5U. Again go reading the opencompute for infos
+
+* make something work for you
+* small teams win
+* reboot on lan! (getting added in)
+* take risks but have hedges for them
+* itterate and innovate
+
+
