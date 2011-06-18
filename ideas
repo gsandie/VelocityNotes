@@ -1,0 +1,5 @@
+Real time graphs.
+
+Can we do this with collectd and the socket info, and EM/Goliath or something with the http plugin they have? Then draw with some sort of JS?
+
+
